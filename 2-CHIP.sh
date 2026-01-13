@@ -133,3 +133,34 @@ fimo --oc ./fimo/AC --verbosity 1 --thresh 1.0E-4 prodoric.meme AC.fa
 #
 #
 #
+bamCompare -b1 ../3-bam/${t3}.bam -b2 ../3-bam/${c3}.bam \
+           -o KQ_HNS_ratio.bw \
+           --operation ratio \
+           --scaleFactorsMethod SES \ 
+           --binSize 50 \ 
+           --pseudocount 1 #防止除数为零。\ 
+           --effectiveGenomeSize 4641652 \
+           --extendReads 200 。\ 
+           --ignoreDuplicates 。\ 
+           --minMappingQuality 20 \
+           --numberOfProcessors 32 
+
+ 
+bamCompare -b1 ../3-bam/${t1}.bam -b2 ../3-bam/${c1}.bam \
+           -o WT_HNS_ratio.bw \
+           --operation ratio \
+           --scaleFactorsMethod SES \
+           --binSize 50 \
+           --pseudocount 1 \
+           --effectiveGenomeSize 4641652 \
+           --extendReads 200 \
+           --ignoreDuplicates \
+           --minMappingQuality 20 \
+           --numberOfProcessors 32
+
+bigwigCompare -b1 KQ_HNS_ratio.bw -b2 WT_HNS_ratio.bw \
+              -o KQ_vs_WT_HNS_log2ratio.bw \
+              --operation log2 \
+              --binSize 50 \
+              --pseudocount 1 \
+              --numberOfProcessors 8
